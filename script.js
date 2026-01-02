@@ -1,15 +1,20 @@
-document.addEventListener('DOMContentLoaded', async () => {
-  const v = document.getElementById('bg-video');
+document.addEventListener('DOMContentLoaded', () => {
+  const video = document.getElementById('bg-video');
+  const clickLayer = document.getElementById('click-layer');
 
-  // Попытка начать с звуком
-  v.muted = false;
-  try {
-    await v.play();
-    console.log('Playback started WITH sound');
-  } catch (err) {
-    // Браузер заблокировал: включаем muted и воспроизводим
-    v.muted = true;
-    try { await v.play(); } catch(e) { /* ничего */ }
-    console.log('Autoplay with sound blocked — playing muted');
-  }
+  video.play().catch(() => {});
+
+  clickLayer.addEventListener('click', async () => {
+    video.muted = false;
+    video.volume = 1;
+
+    try {
+      await video.play();
+      console.log('Sound enabled');
+    } catch (e) {
+      console.warn('Sound still blocked');
+    }
+
+    clickLayer.remove(); 
+  });
 });
